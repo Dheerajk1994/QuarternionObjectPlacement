@@ -7,6 +7,7 @@ public class TerrainGeneratorScript : MonoBehaviour
     [SerializeField] private GameObject world;
     [SerializeField] private GameObject treePrefab;
     [SerializeField] private float distanceFromCenter;
+    [SerializeField] private int numberOfTrees;
 
     private Vector3 worldCenter;
 
@@ -14,13 +15,11 @@ public class TerrainGeneratorScript : MonoBehaviour
     {
         worldCenter = world.transform.position;
         GameObject tempObj;
-        for(int i = 0; i < 100; ++i)
+        for(int i = 0; i < numberOfTrees; ++i)
         {
-            tempObj = Instantiate(treePrefab);
-            Vector3 randomVector = new Vector3(UnityEngine.Random.Range(-180, 180), UnityEngine.Random.Range(-180, 180), UnityEngine.Random.Range(-180, 180)).normalized;
-            tempObj.transform.position = randomVector * distanceFromCenter - worldCenter;
-            Quaternion rotation = Quaternion.LookRotation(tempObj.transform.position - worldCenter);
-            tempObj.transform.rotation = rotation;
+            Vector3 pos = Random.onUnitSphere.normalized * distanceFromCenter - worldCenter;
+            Quaternion rotation = Quaternion.LookRotation(pos - worldCenter);
+            tempObj = Instantiate(treePrefab, pos, rotation);
         }
     }
 }
